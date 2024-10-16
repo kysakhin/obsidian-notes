@@ -1,0 +1,7 @@
+- **Type:** Connection-less
+- **Function:** Sends data without guaranteeing delivery, order or error-checking
+- **Key Features:**
+	- No Connection setup, so its faster but less reliable
+	- Packets may arrive out of order or may be lost forever
+	- Lightweight with minimal overhead
+- **Use cases:** Online gaming, video streaming, VoIP (Voice over IP), DNS queries

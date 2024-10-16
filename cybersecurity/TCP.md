@@ -1,0 +1,8 @@
+- **Type:** Connection oriented
+- **Function:** Ensures reliable, ordered and error-checked delivery of data between devices
+- **Key Features:**
+	- Establishes connection via three-way handshake before data is transmitted
+	- Provides error recovery by re-transmitting lost/corrupted data
+	- Maintains order by sending data in packets and reordering them if necessary
+	- Slower but highly reliable
+- **Use cases:** Web browsing (HTTP/HTTPS), email(SMTP), file transfers(FTP)
