@@ -39,4 +39,16 @@ Merge the two lists into one **sorted** list. The list should be made by splicin
 Return _the head of the merged linked list_.
 
 ### solution
-since this uses linked lists, i prefer to use C. but the logic is just the same.
+since this uses linked lists, i prefer to use C. but the logic is just the same. there are two approaches, recursion and iterative approach. \
+
+#### recursion
+first we assign some base conditions, like if list1 is empty, then just return list2 pointer and vice-versa. 
+we check condition if the current value of the list1 is greater or lesser than list2 and then update the next pointer with recursion. but when doing the recursion we call it with the next value of the selected list. so that it can also do its thing and compare. \
+when either one of the lists reaches its end, i.e at NULL, then the base condition triggers, that returns the non-empty list and this value will be stored in the previous recursion call's `list->next`. once that is resolved, it will return that particular list's current pointer. 
+![](https://blog-pictures.vercel.app/merge1.png)
+
+here's a visual representation of whats happening, 
+![](https://blog-pictures.vercel.app/merge2.png) 
+
+please do mind that, by `returned values` i am referring to the line after `list->next`. each recursion return passes the lower value back up the stack connecting it to the previous smaller node found in the previous call.
+this would mean `2000->1000->2010->1010->2020->1010`
