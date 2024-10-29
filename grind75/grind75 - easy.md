@@ -52,3 +52,34 @@ here's a visual representation of whats happening,
 
 please do mind that, by `returned values` i am referring to the line after `list->next`. each recursion return passes the lower value back up the stack connecting it to the previous smaller node found in the previous call.
 this would mean `2000->1000->2010->1010->2020->1010`
+idk i think this might have been a bad explanation pls forgive me.
+the other approach is a lot simpler.
+
+#### iterative approach
+again, we first check if any of the list is empty, then if it is, then return the head of the other list. pretty simple. for the next step, we first try to initiate a pointer to the smaller of the first element of both of the lists. so that we can get the right starting point. if the first element of the first list is smaller, then we will modify the pointers of the first list. once we've done that, we shall also update the pointer of the selected list to the next element since that is already there. then we iterate until either one of the lists reaches the end. while iterating we check for condition and then accordingly update pointers. pretty straightforward. and also don't forget to change the current pointer to point to the next after each iteration, after checking for condition. once we reached the end of one of the list, we check which one still has values and the  update our list to that list.
+![](https://blog-pictures.vercel.app/merge3.png)
+
+
+# Best time to buy and sell stock (121)
+### Description
+You are given an array `prices` where `prices[i]` is the price of a given stock on the `ith` day.
+
+You want to maximize your profit by choosing a **single day** to buy one stock and choosing a **different day in the future** to sell that stock.
+
+Return _the maximum profit you can achieve from this transaction_. If you cannot achieve any profit, return `0`.
+
+### Solution
+and no, as much as we'd like to use nested for loop and call it a day, it is greatly inefficient. it gets the job done if our data is less. but the higher you go in size, the longer it is gonna take. \
+to proceed with this, first we will need to initiate our minimum value to a big number. like infinity. and with python this is possible. now as we go through each price in the list, we keep track of the minimum value and then try to calculate what would be our max profit outcome from subtracting the current item in the iteration to the current minimum. pretty basic. 
+![](https://blog-pictures.vercel.app/stock.png)
+
+
+# Valid Palindrome (125)
+### description
+A phrase is a **palindrome** if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.
+
+Given a string `s`, return `true` _if it is a **palindrome**, or_ `false` _otherwise_.
+
+### solution
+split the string into an array of all the characters. with each character as an element of its own (or use a generator expression). and then just join it with ''.join
+![](https://blog-pictures.vercel.app/validpalind1.png)
