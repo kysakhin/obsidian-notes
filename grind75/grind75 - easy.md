@@ -83,3 +83,15 @@ Given a string `s`, return `true` _if it is a **palindrome**, or_ `false` _other
 ### solution
 split the string into an array of all the characters. with each character as an element of its own (or use a generator expression). and then just join it with ''.join
 ![](https://blog-pictures.vercel.app/validpalind1.png)
+
+
+# Invert Binary Tree (226)
+
+### description
+Given the `root` of a binary tree, invert the tree, and return _its root_.
+
+### solution
+since the description wasn't very descriptive, so we need to change the left and right children of each node in the tree. very simple. first intuition would be to do pointer swapping using temporary variable. it gets the job done. but if youre a bit more smarter, then, since the function has a return type of the pointer itself, then you can just simply call the function with the right child and store it to the left child. but obviously youre gonna need to store the reference of the left child before swapping. so for that we shall create a temp pointer and initiate it to left.
+![](https://blog-pictures.vercel.app/invertbst1.png)
+
+# 
