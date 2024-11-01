@@ -39,3 +39,14 @@ According to the [definition of LCA on Wikipedia](https://en.wikipedia.org/wiki/
 ### solution
 the feature of bst is that the left child is smaller than the root and the right child is greater than the root. we can take use of this simple logic. so we can use recursion for this job. if both the given nodes are lesser than the root node, then we can simply do a recursion call to the left sub-tree. and if both are greater, then perform a recursion call to the right sub-tree
 ![](https://blog-pictures.vercel.app/lowancest1.png)
+
+# Balanced binary tree (110)
+### description
+Given a binary tree, determine if it is **height-balanced** .
+
+### solution
+according to this problem, a height-balanced tree is a binary tree in which the depth of the two subtrees of every node never differs by more than one. a binary tree is just naturally more recursion friendly. so we are gonna be using recursion for this. having a recursive function that returns an int, we can pretty easily find the depth at any given point. and using a recursive dfs is a lot easier. so we make a new function that returns int and that performs dfs and it accepts Tree node pointers. \
+so first we shall implement a base condition. if the given pointer is NULL, then we simply return 0. then we initiate a variable to store the left height for that given node, and call the dfs function with the current_node->left. and the same with right aswell. and right after each function we try to early check if the value of the height ends up as -1, then we just return out of the function with -1. and for each recursion call, we also try to find the absolute difference between the left depth and right depth. if it is greater than 1, then simply return -1. else return 1 + whichever is the greater height (either left or right) \
+![](https://blog-pictures.vercel.app/balancedbst1.png)
+
+# 
