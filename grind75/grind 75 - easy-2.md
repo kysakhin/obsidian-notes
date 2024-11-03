@@ -49,4 +49,14 @@ according to this problem, a height-balanced tree is a binary tree in which the 
 so first we shall implement a base condition. if the given pointer is NULL, then we simply return 0. then we initiate a variable to store the left height for that given node, and call the dfs function with the current_node->left. and the same with right aswell. and right after each function we try to early check if the value of the height ends up as -1, then we just return out of the function with -1. and for each recursion call, we also try to find the absolute difference between the left depth and right depth. if it is greater than 1, then simply return -1. else return 1 + whichever is the greater height (either left or right) \
 ![](https://blog-pictures.vercel.app/balancedbst1.png)
 
-# 
+# Linked List cycle (141)
+### description
+Given `head`, the head of a linked list, determine if the linked list has a cycle in it.
+
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the `next` pointer. Internally, `pos` is used to denote the index of the node that tail's `next` pointer is connected to. **Note that `pos` is not passed as a parameter**.
+
+Return `true` _if there is a cycle in the linked list_. Otherwise, return `false`.
+
+### solution
+we can use an approach that uses two pointers. but here, one pointer moves faster than the other. so at any given time if both of the pointers are equal, we simply return true. so the fast pointer eventually catches up to the slow pointer and we can say that the given linked list is circular. and we can iterate until the end of the linked list (i.e until the next is pointing to NULL).
+![](https://blog-pictures.vercel.app/llcycle1.png)
