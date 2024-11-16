@@ -4,7 +4,7 @@
 Given two strings `s` and `t`, return `true` if `t` is an anagram of `s`, and `false` otherwise.
 
 ### solution
-store the characters and their counts in a hashmap. iterate through each character in the string s and string t and store it in their respective hasmaps. return true if both hashmaps are equal
+store the characters and their counts in a hashmap. iterate through each character in the string s and string t and store it in their respective hasmaps. return true if both hashmaps are equal \
 ![](https://blog-pictures.vercel.app/anagram1.png)
 
 # Binary search (704)
@@ -37,7 +37,7 @@ Given a binary search tree (BST), find the lowest common ancestor (LCA) node of 
 According to the [definition of LCA on Wikipedia](https://en.wikipedia.org/wiki/Lowest_common_ancestor): “The lowest common ancestor is defined between two nodes `p` and `q` as the lowest node in `T` that has both `p` and `q` as descendants (where we allow **a node to be a descendant of itself**).”
 
 ### solution
-the feature of bst is that the left child is smaller than the root and the right child is greater than the root. we can take use of this simple logic. so we can use recursion for this job. if both the given nodes are lesser than the root node, then we can simply do a recursion call to the left sub-tree. and if both are greater, then perform a recursion call to the right sub-tree
+the feature of bst is that the left child is smaller than the root and the right child is greater than the root. we can take use of this simple logic. so we can use recursion for this job. if both the given nodes are lesser than the root node, then we can simply do a recursion call to the left sub-tree. and if both are greater, then perform a recursion call to the right sub-tree \
 ![](https://blog-pictures.vercel.app/lowancest1.png)
 
 # Balanced binary tree (110)
@@ -58,5 +58,40 @@ There is a cycle in a linked list if there is some node in the list that can be 
 Return `true` _if there is a cycle in the linked list_. Otherwise, return `false`.
 
 ### solution
-we can use an approach that uses two pointers. but here, one pointer moves faster than the other. so at any given time if both of the pointers are equal, we simply return true. so the fast pointer eventually catches up to the slow pointer and we can say that the given linked list is circular. and we can iterate until the end of the linked list (i.e until the next is pointing to NULL).
+we can use an approach that uses two pointers. but here, one pointer moves faster than the other. so at any given time if both of the pointers are equal, we simply return true. so the fast pointer eventually catches up to the slow pointer and we can say that the given linked list is circular. and we can iterate until the end of the linked list (i.e until the next is pointing to NULL).\
 ![](https://blog-pictures.vercel.app/llcycle1.png)
+
+
+# Implement Queue using Stacks (232)
+### description
+Implement a first in first out (FIFO) queue using only two stacks. The implemented queue should support all the functions of a normal queue (`push`, `peek`, `pop`, and `empty`).
+
+Implement the `MyQueue` class:
+
+- `void push(int x)` Pushes element x to the back of the queue.
+- `int pop()` Removes the element from the front of the queue and returns it.
+- `int peek()` Returns the element at the front of the queue.
+- `boolean empty()` Returns `true` if the queue is empty, `false` otherwise.
+
+**Notes:**
+
+- You must use **only** standard operations of a stack, which means only `push to top`, `peek/pop from top`, `size`, and `is empty` operations are valid.
+- Depending on your language, the stack may not be supported natively. You may simulate a stack using a list or deque (double-ended queue) as long as you use only a stack's standard operations.
+
+### solution
+to use two stacks to simulate queue structure. one stack will be used to accept elements using push operations. and when a pop operation is called, then we check if the second stack is empty, if it is, then we just transfer the elements from stack 1 onto the second one starting from the top. \
+![](https://blog-pictures.vercel.app/qwithstack.png)\
+![](https://blog-pictures.vercel.app/qwithstack2.png)
+
+
+# First Bad Version (278)
+### description
+You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad.
+
+Suppose you have `n` versions `[1, 2, ..., n]` and you want to find out the first bad one, which causes all the following ones to be bad.
+
+You are given an API `bool isBadVersion(version)` which returns whether `version` is bad. Implement a function to find the first bad version. You should minimize the number of calls to the API.
+
+### solution
+solution using binary search. simpler on python. but if you want to implement on C, and given the constraints, finding mid point using (first+last)/2 will exceed the size limit of int for a few test cases. so we rather do `offset + (mid point from current first pointer)` which can work for the testcases given. \
+![](https://blog-pictures.vercel.app/firstbadver1.png)
