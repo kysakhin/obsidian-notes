@@ -20,8 +20,23 @@
               "icon": "lucide-file",
               "title": "grind 75 - easy-2"
             }
+          },
+          {
+            "id": "3edcf1bd86da4786",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "grind 75 - easy 3.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "grind 75 - easy 3"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -162,10 +177,11 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "913ead6bcc1d1efb",
+  "active": "3edcf1bd86da4786",
   "lastOpenFiles": [
-    "grind75 - easy-1.md",
     "grind 75 - easy-2.md",
+    "grind 75 - easy 3.md",
+    "grind75 - easy-1.md",
     "Welcome.md",
     "Untitled"
   ]
