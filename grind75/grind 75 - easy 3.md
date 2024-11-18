@@ -62,4 +62,32 @@ Given two binary strings `a` and `b`, return _their sum as a binary string_.
 ive come up with a solution using c, but python also should work the same way. i use string + pointer arithmetic to write this solution. we first traverse to the last of each string one by one and keep a track of the size while doing it. and then create a variable to store the max length of the string. and then create another string with that same size + 2 (one to handle carry forwards and another for the null pointer). and then keep updating the result string from the back. at the end, if the pointer of the result string ends up at 0 and not -1, this means we have an extra char at the beginning of the string, which we had created to handle carry forward, but wasn't used. so we can just use pointer arithmetic to update the first position of the string to the next position. \
 ![](https://blog-pictures.vercel.app/addbin.png)
 
-# 
+# Middle of the Linked List (876)
+### description
+Given the `head` of a singly linked list, return _the middle node of the linked list_.
+
+If there are two middle nodes, return **the second middle** node.
+
+### solution 
+iterate through the linked list to get the number of nodes and then just iterate till the mid and then return that pointer. \
+![](https://blog-pictures.vercel.app/midll.png)
+
+# Maximum Depth of Binary Tree
+### description
+Given the `root` of a binary tree, return _its maximum depth_.
+
+A binary tree's **maximum depth** is the number of nodes along the longest path from the root node down to the farthest leaf node.
+
+### solution
+im using a helper function that ill call recursively with increasing the depth for each call. and then just return the max. \
+![](https://blog-pictures.vercel.app/depthofbt.png)
+
+# Contains duplicate (217)
+### description
+Given an integer array `nums`, return `true` if any value appears **at least twice** in the array, and return `false` if every element is distinct.
+
+### solution
+too simple. just keep track of the elements in a set in python for fast lookup time. and while iterating, if it is present then just return True. else at the end return False \
+![](https://blog-pictures.vercel.app/contdup.png)
+
+#
