@@ -9,7 +9,7 @@ characteristics of processes:
 
 ### thread
 threads of execution, or threads for short are parts of processes that can run independently but shares the same memory space as the rest of the process. \
-imagine a process as a notebook. and threads are the different people writing in different sections of the notebook. but writing at the same time. without needing separate notebooks.\
+imagine a process as a notebook. and threads are the different people writing in different sections of the notebook. but writing at the same time. without needing separate notebooks. \
 each thread includes a unique program counter, process stack, and set of processor registers. the kernel schedules individual threads and not processes.
 threads are scheduled by the operating system to run concurrently, improving system responsiveness and throughput.
 
@@ -50,3 +50,6 @@ Here are some key roles the kernel plays:
 - **Resource Management**: The kernel manages system resources, such as file descriptors, sockets, and I/O devices, and provides access to these resources to processes and threads.
 
 ---
+
+## how a new process is born
+a process starts its life by the `fork()` system call. which creates a new process by duplicating an existing process. so a parent process calls the fork(). the parent resumes execution and the child begins execution at the same place where the call returns. then using the exec() family system call are called in the child process to actually load the things onto the ram.
