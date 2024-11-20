@@ -53,3 +53,10 @@ Here are some key roles the kernel plays:
 
 ## how a new process is born
 a process starts its life by the `fork()` system call. which creates a new process by duplicating an existing process. so a parent process calls the fork(). the parent resumes execution and the child begins execution at the same place where the call returns. then using the exec() family system call are called in the child process to actually load the things onto the ram.
+
+### Process States
+- TASK_RUNNING - this process is either running or in the queue waiting to run. 
+- TASK_INTERRUPTIBLE - a sleeping process that is waiting for a signal or some condition to exist. when its satisfied, then the kernel sets the process's state to TASK_RUNNING. 
+- TASK_UNINTERRUPTIBLE - these tasks wont be interrupted by signals. not even kill/terminate signal can end it. 
+- TASK_ZOMBIE - these processes are processes that have finished their execution but their parent process hasnt read any exit status from that process. 
+- TASK_STOPPED - if a process has received a stop/terminate signal. this process is not running nor is eligible to run.
