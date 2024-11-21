@@ -60,3 +60,11 @@ a process starts its life by the `fork()` system call. which creates a new proce
 - TASK_UNINTERRUPTIBLE - these tasks wont be interrupted by signals. not even kill/terminate signal can end it. 
 - TASK_ZOMBIE - these processes are processes that have finished their execution but their parent process hasnt read any exit status from that process. 
 - TASK_STOPPED - if a process has received a stop/terminate signal. this process is not running nor is eligible to run.
+
+### Copy-on-write
+so when a `fork` is called then it duplicates the parent. initially the child and the parent shares the same memory marked as read-only. until any one of them calls an `exec` method. then the process that calls the method gets a copy of the shared memory and that process will continue to perform tasks from that memory. so this copy happens only when it's needed, hence saving a lot of memory space. 
+
+
+### some terms 
+- page tables: the kernel implements page tables to know which memory pages are shared and read-only. all pages are marked read-only to prevent accidental writes. when a `fork` is called, the child only gets a copy of the parent's page table entries. but the actual memory is not duplicated 
+- page faults: when a process tries to modify a read-only memory, then the cpu throws a page fault. the kernel handles the page fault by allocating a new memory space for the process attempting to modify page value 
