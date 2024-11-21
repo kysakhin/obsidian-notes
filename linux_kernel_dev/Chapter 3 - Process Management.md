@@ -68,3 +68,8 @@ so when a `fork` is called then it duplicates the parent. initially the child an
 ### some terms 
 - page tables: the kernel implements page tables to know which memory pages are shared and read-only. all pages are marked read-only to prevent accidental writes. when a `fork` is called, the child only gets a copy of the parent's page table entries. but the actual memory is not duplicated 
 - page faults: when a process tries to modify a read-only memory, then the cpu throws a page fault. the kernel handles the page fault by allocating a new memory space for the process attempting to modify page value 
+
+### vfork()
+this system call creates a child that will run in the same memory space as the parent. but the execution of the parent process is temporarily paused and only the child will be executing in that memory space. this will go on until the child exits or either call an `exec`. but this also has its own drawbacks. if the child fails to exec then there is no way for the parent to resume operation. 
+
+## linux implementation of threads 
