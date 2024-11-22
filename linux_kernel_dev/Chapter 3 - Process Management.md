@@ -77,3 +77,14 @@ there's fundamentally not a lot of difference between threads and processes in l
 
 ## kernel threads
 kernel threads are processes performed by the kernel in the kernel space. these processes do not have an address space. they operate only in the kernel space and do not context switch into the kernel space. but they can be scheduled and preempted in the same way as normal processes. 
+
+## process termination
+a process can terminate itself by the `exit` system call. a process can also terminate another process using signals like sigterm and sigkill. \
+steps:
+- release of resources back to the system
+- signal handling
+- change the process's state to TASK_ZOMBIE 
+- notify the parent
+
+but what about parentless tasks?  \
+when a parent terminates before its children, then its children are orphaned. the kernel needs to make sure that these child processes has a valid parent to handle their termination and resource cleanup. the kernel handles this by adopting the child to `init` which is the first process (PID 1). on a few machines, it is systemd. the first process to start. 

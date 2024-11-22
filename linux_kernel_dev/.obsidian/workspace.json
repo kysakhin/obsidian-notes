@@ -20,8 +20,23 @@
               "icon": "lucide-file",
               "title": "Chapter 3 - Process Management"
             }
+          },
+          {
+            "id": "833e9bedc2a1fc55",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Chapter 4 - Process Scheduling.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Chapter 4 - Process Scheduling"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -162,9 +177,10 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "e2687123a2cf99da",
+  "active": "833e9bedc2a1fc55",
   "lastOpenFiles": [
-    "Chapter 2.md",
-    "Chapter 3 - Process Management.md"
+    "Chapter 3 - Process Management.md",
+    "Chapter 4 - Process Scheduling.md",
+    "Chapter 2.md"
   ]
 }
