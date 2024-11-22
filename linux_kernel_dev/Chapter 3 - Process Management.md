@@ -72,4 +72,8 @@ so when a `fork` is called then it duplicates the parent. initially the child an
 ### vfork()
 this system call creates a child that will run in the same memory space as the parent. but the execution of the parent process is temporarily paused and only the child will be executing in that memory space. this will go on until the child exits or either call an `exec`. but this also has its own drawbacks. if the child fails to exec then there is no way for the parent to resume operation. 
 
-## linux implementation of threads 
+### linux implementation of threads 
+there's fundamentally not a lot of difference between threads and processes in linux kernel. processes and threads are both represented as tasks. the whole structure of process and thread are the same. threads can be considered tasks that share the same memory space. linux implements all threads as standard processes. 
+
+## kernel threads
+kernel threads are processes performed by the kernel in the kernel space. these processes do not have an address space. they operate only in the kernel space and do not context switch into the kernel space. but they can be scheduled and preempted in the same way as normal processes. 
