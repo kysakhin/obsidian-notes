@@ -90,4 +90,14 @@ Given an integer array `nums`, return `true` if any value appears **at least twi
 too simple. just keep track of the elements in a set in python for fast lookup time. and while iterating, if it is present then just return True. else at the end return False \
 ![](https://blog-pictures.vercel.app/contdup.png)
 
-#
+# Diameter of a Binary Tree (543)
+### description
+Given the `root` of a binary tree, return _the length of the **diameter** of the tree_.
+
+The **diameter** of a binary tree is the **length** of the longest path between any two nodes in a tree. This path may or may not pass through the `root`.
+
+The **length** of a path between two nodes is represented by the number of edges between them.
+
+### solution
+the core idea is to traverse the tree and, at each node, calculate the maximum depth of its left and right subtrees. the diameter at each node is the sum of these depths (because a path from one node to another could go through both subtrees). perform recursion into left and right subtrees. and then update the diameter, compare it with the current value of diameter and left+right distance. and then return the depth. this needs a helper function. \
+![](https://blog-pictures.vercel.app/diameterofbst.png)

@@ -8,20 +8,6 @@
         "type": "tabs",
         "children": [
           {
-            "id": "e2687123a2cf99da",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Chapter 3 - Process Management.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Chapter 3 - Process Management"
-            }
-          },
-          {
             "id": "833e9bedc2a1fc55",
             "type": "leaf",
             "state": {
@@ -35,8 +21,7 @@
               "title": "Chapter 4 - Process Scheduling"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -92,8 +77,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 200
   },
   "right": {
     "id": "d36b8cba7e068848",
