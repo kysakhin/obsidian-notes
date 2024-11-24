@@ -56,4 +56,22 @@ struct runqueue {
 }
 ```
 
+there are a few macros that are used to obtain the runqueue associated with a given processor. \
+*cpu_rq(process)* returns a pointer to the runqueue associated to that process. \
+*this_rq()* returns the pointer to the runqueue of the current processor. \
+
+before a runqueue can be manipulated, it must be locked. this prevents modification of the runqueue while the lock-holder is making changes to it. 
+
+## priority arrays
+each runqueue contains two priority arrays, the active and expired array. these provide O(1) scheduling. this is old and outdated, since the newer kernel uses O(log n). here's a general structure: 
+
+```C
+struct prio_array {
+    unsigned long bitmap[BITMAP_SIZE];  // Tracks which priority queues are non-empty
+    struct list_head queue[MAX_PRIO];  // Array of linked lists, one for each priority level
+    int nr_active; // Number of active (runnable) tasks in this array
+};
+```
+
+in the O(1) scheduler, both static and dynamic priorities are mapped to a common range. *MAX_PRIO* by default is 140. (0-139). the bitmap is first initialized to 0 (140 times). and now if i wanna run (change their state to runnable) a few tasks of a given PRIORITY, then i can just change the bit in the bitmap\[PRIORITY\] to 1. there is one `struct list_head` for each priority level. 
 
