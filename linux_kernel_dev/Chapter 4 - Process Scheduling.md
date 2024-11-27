@@ -78,3 +78,25 @@ in the O(1) scheduler, both static and dynamic priorities are mapped to a common
 so the bitmap is a contiguous array of bits that span over the elements of the array. since we need 140 bits, and considering **unsigned long,** \
 - on 32-bit systems is of 32 bits size. so you would need bitmap\[5\] to cover the whole range of 140 priorities. 
 - on 64-bit systems is of 64 bits size (linux and macos). (32 bit on windows) you would need bitmap\[3\] to cover the whole range of 140 priorities.
+
+bitmap\[0] holds priorities 0-63 \ 
+bitmap\[1] holds priorities from 64-127 and so on \ 
+and here, indexing starts from right. so if there's something like 0b000.....01, then this means that priority 0 has runnable tasks. \
+there's a cpu instruction called fast find first set bit which fetches the first set bit in a bitmap in O(1) time. 
+
+## recalculating timeslices
+once a task has exhausted its timeslice, the kernel removes it from the active runqueue. then it recomputes the timeslice for that task before moving it to the expired queue. once there's no more any tasks in the active queue, then the kernel would just need to swap the pointers of the active and expired runqueue. being a lot more efficient. this obviously has some very major trade-offs like starvation if a the active runqueue is continuously being repopulated. 
+
+## calculating priority and timeslice
+### priority
+a process initiates with a default nice value of 0. then a method called `effective_prio()` returns a tasks's dynamic priority. the method begins with the tasks's nice value and then giving it a bonus or penalty of +5 to -5 based on the interactivity of the task. if a task is more interactive, then it'll get more bonus and gets a higher dynamic priority. on the other hand, if the process is a cpu hog, then it will get a penalty. \
+but how exactly does it know if a process is interactive or not? \
+if a task spends most of its time sleeping, then it is i/o based. but if it spends most of its time running, then its not an interactive process and hence it would get a penalty. and also interactive processes tend to work in shorter time bursts and are interrupted frequently. 
+
+### timeslice
+timeslice is calculated based on that process's static priority. the calculation is the scaling of the static priority into a range of timeslices. 
+
+## sleeping and waking up
+processes waiting for a certain resources to become available are put on sleep or blocked state. once a process is put into the sleep state, it removes itself from the runqeueue, (this ensures that the scheduler isn't running it unnecessarily) and gets added into the wait queue. \
+and then to wake up, it is the reverse, it marks itself as runnable, removes itself from the wait queue, and joins the runqueue. \
+going back, there are two states associated with sleeping, TASK_INTERRUPTIBLE which can be awaken by signals. and another TASK_UNINTERRUPTIBLE which doesn't respond to signals. 

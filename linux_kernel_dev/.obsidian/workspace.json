@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Chapter 4 (Updated) CFS.md",
+                "file": "Chapter 4 - Process Scheduling.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Chapter 4 (Updated) CFS"
+              "title": "Chapter 4 - Process Scheduling"
             }
           }
         ],
@@ -179,9 +179,9 @@
   },
   "active": "60be8cf81f3c8208",
   "lastOpenFiles": [
-    "Chapter 4 - Process Scheduling.md",
-    "Chapter 4 (Updated) CFS.md",
     "Chapter 3 - Process Management.md",
-    "Chapter 2.md"
+    "Chapter 2.md",
+    "Chapter 4 - Process Scheduling.md",
+    "Chapter 4 (Updated) CFS.md"
   ]
 }
