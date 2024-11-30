@@ -58,7 +58,7 @@ struct runqueue {
 }
 ```
 
-there are a few macros that are used to obtain the runqueue associated with a given processor. \
+there are a few macros that are used to obtain the runqueue associated with a given processor. 
 *cpu_rq(process)* returns a pointer to the runqueue associated to that process. \
 *this_rq()* returns the pointer to the runqueue of the current processor. \
 
@@ -77,7 +77,7 @@ struct prio_array {
 
 in the O(1) scheduler, both static and dynamic priorities are mapped to a common range. *MAX_PRIO* by default is 140. (0-139). the bitmap is first initialized to 0 (140 times). and now if i wanna run (change their state to runnable) a few tasks of a given PRIORITY, then i can just change the bit in the bitmap\[PRIORITY\] to 1. there is one `struct list_head` for each priority level. 
 
-so the bitmap is a contiguous array of bits that span over the elements of the array. since we need 140 bits, and considering **unsigned long,** \
+so the bitmap is a contiguous array of bits that span over the elements of the array. since we need 140 bits, and considering **unsigned long,** 
 - on 32-bit systems is of 32 bits size. so you would need bitmap\[5\] to cover the whole range of 140 priorities. 
 - on 64-bit systems is of 64 bits size (linux and macos). (32 bit on windows) you would need bitmap\[3\] to cover the whole range of 140 priorities.
 
