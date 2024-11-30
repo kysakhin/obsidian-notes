@@ -100,3 +100,12 @@ timeslice is calculated based on that process's static priority. the calculation
 processes waiting for a certain resources to become available are put on sleep or blocked state. once a process is put into the sleep state, it removes itself from the runqeueue, (this ensures that the scheduler isn't running it unnecessarily) and gets added into the wait queue. \
 and then to wake up, it is the reverse, it marks itself as runnable, removes itself from the wait queue, and joins the runqueue. \
 going back, there are two states associated with sleeping, TASK_INTERRUPTIBLE which can be awaken by signals. and another TASK_UNINTERRUPTIBLE which doesn't respond to signals. 
+
+## load balancer
+since each processor on a multiprocessor system has its own runqueue, the load balancer ensures that the tasks are equally or almost equally distributed among the cpu cores. it pulls processes from one runqueue to another to relieve imbalances. the steps that it follows are: 
+1. find the busiest queue. start with one runqueue, then try to find a runqueue that has atleast 25% more tasks than the current. if no such runqueue is found, then there is no need for a load balance.
+2. then it decides which priority array does it want to pull from that selected runqueue. the expired queue is preferred since its not cache hot (most unlikely to be in the cpu's cache). if the expired queue is empty, then the active queue is the only option. 
+3. then it finds the highest priority list that has tasks since it is important to run the higher priority tasks than the lower priority. 
+4. then it goes through the tasks of that given priority to find a task that is not running, not prevented to migrate (due to processor affinity) and is not cache hot. and then it pulls that task. 
+5. continue this until the runqueues are imbalanced. 
+
