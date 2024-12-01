@@ -39,4 +39,30 @@ for reference, here's how process_weight is affected by nice values
 4. **nice 10:** weight = 109
 5. **nice 19:** weight = approx. 15
 
+# the linux scheduling implementation
+- time accounting
+- process selection
+- scheduler entry point
+- sleeping and waking up
 
+## time accounting
+on each tick of the system clock, the timeslice is decremented by the tick period. when the timslice reaches zero, the process is preempted to another runnable process whos timeslice isn't already exhausted.
+### the scheduler entity structure
+a task in the cfs is represented something like this \
+a general structure, this isn't the final struct. only the necessities.
+```c
+struct sched_entity {
+	struct load_weight load;   // load based on the weight (nice value)
+	struct rb_node run_node;   // a node in the red-black tree. 
+	unsigned int on_rq;   // indicates if the task is runnable
+	u64 exec_start;   // tracks when the task started running
+	u64 sum_exec_runtime;   // total runtime of the task.
+	u64 vruntime;   // tracks vruntime
+};
+```
+
+## process selection
+### picking the next task
+cfs picks the process with the smallest vruntime. since it uses a rbtree, the task having the lowest vruntime is the leftmost node in the tree. we can either traverse to it or rather have it cached in the `struct cfs_rq` entity.
+
+actual implementation of adding, removing tasks in later chapters.
