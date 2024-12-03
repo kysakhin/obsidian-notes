@@ -26,4 +26,28 @@ system calls provide a layer between hardware and user-space processes. this lay
 
 
 # apis posix and the C library
-api is a communicator between different software components. 
+api is a communicator between different software components. an api defines a set of programming interfaces that can be used as system calls. \
+posix is a family of standards provided by the IEEE that aim to provide a portable operating system standard roughly based on unix. posix was a standard to resemble the interfaces provided by the earlier unix systems. linux tries to be posix complaint wherever possible. \
+the system call interface in linux, similarly to most unix systems, is provided by the C library. the C library implements the main api on unix systems including standard C and system call interface. \
+from the programmer's point of view, system calls aren't necessary. only apis. apis wrap around system calls for convenience and portability. on the other hand, kernel is only concerned about system calls. 
+
+## system call numbers
+each syscall is given a unique number. when a user space program executes a system call then it calls it with the number and not the actual name of the syscall. once the number is assigned, it cannot be changed, cannot be reused for some other syscall. the kernel keeps a list of all the registered system calls in the system call table. \
+### performance
+syscalls in linux are faster than in many other operating systems partly because of its really fast context switch times. entering and exiting the kernel is simple and streamlined. another factor is the simplicity of the system call handler and the syscalls themselves. 
+
+# system call handler
+before moving to this, some prerequisites to know is
+### interrupt vector table 
+this is like a phonebook of all the interrupts with their associated number, which points to an address in memory for handling that interrupt. the ivt table is typically located at 0x0000. for example, a real time example, 
+1. you press a key
+2. interrupt is now sent to the cpu to inform that a key was pressed
+3. now cpu looks up to that interrupt number, maybe something like 0x18
+4. then the ivt points to the handler of that interrupt to be at some address 0x1234 which points to the code that handles key presses
+5. then the cpu runs that interrupt handler
+
+## going back
+really really long ago, processors used the interrupt number 0x80 for system calls. this triggers a switch to kernel mode and handler is called system_call(). it is architecture dependent. \
+but a more better way x86 processors handle is sysenter. 
+
+
