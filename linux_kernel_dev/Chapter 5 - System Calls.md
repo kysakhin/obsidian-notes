@@ -21,3 +21,9 @@ system calls are a set of interfaces by which processes running in user-space ca
 
 system calls provide a layer between hardware and user-space processes. this layer has 3 main purposes:
 - acting as an abstracted hardware interface for user applications. when reading or writing a file, the application does not need to worry about the type of disk, media or filesystem type.
+- security. since it prevents unauthorized use of hardware
+- single common point for user space applications and rest of the system. 
+
+
+# apis posix and the C library
+api is a communicator between different software components. 
