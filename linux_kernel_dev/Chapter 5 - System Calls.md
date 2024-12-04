@@ -50,4 +50,28 @@ this is like a phonebook of all the interrupts with their associated number, whi
 really really long ago, processors used the interrupt number 0x80 for system calls. this triggers a switch to kernel mode and handler is called system_call(). it is architecture dependent. \
 but a more better way x86 processors handle is sysenter. 
 
+## system calls wrappers
+like for example, \
+printf in C is essentially a wrapper for the syscall of std output (1). its just a lot better and has formatting and buffering to write std output. 
+
+### denoting the correct system call
+if you have even the slightest experience in assembly, we basically denote registers to values or pointers. 
+- rax register for syscall id (viz. write)
+- rdi register for file descriptor (viz. stdout, stdin, or stderr)
+- rsi points to the address of the string or data to write
+- rdx is the length of the string.
+something like this, 
+```asm
+mov rax, 1
+mov rdi, 1
+mov rsi, msg
+mov rdx, (some number)
+syscall
+```
+so before entering the kernel-space the syscall number is fed into the rax register. the user-space sticks in the syscall associated to a given syscall and then the system call handler reads the value from rax.
+
+## parameter passing
+just like how it works in assembly, the user-space must relay these parameters down to the kernel. for example, \
+![](https://blog-pictures.vercel.app/syscalltable.png)
+
 
