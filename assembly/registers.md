@@ -34,3 +34,37 @@ there are 2 types of registers classified based on if the application can modify
 
 1. Carry flag: holds carry after addition or borrow during subtraction. can sometimes also indicate error conditions
 2. Parity flag: is set if the LS BYTE has an even number of zeroes.
+3. Auxiliary flag: indicates a carry/borrow between lower nibbles.
+4. Zero flag: is set if the result becomes 0
+5. Sign flag: is set if the result is negative
+6. Trap flag: when this flag is set, the cpu generates a special interrupt (debug exception) after every interrupt
+7. Direction flag: this is only how strings are iterated. if DF is 0 then process strings from low memory to higher memory. if it is set then pointer needs to be decreemented from higher memory to lower.
+8. Overflow flag: occurs when signed numbers are added or subtracted and it has exceeded the capacity of the machine. for unsigned operations the overflow flag is ignored. for unsigned, the CF flag handles overflow conditions. 
+9. I/O privilege level: is used in protected mode operation to select the privilege level for I/O devices. it uses 2 bits. so an IOPL of 00 is the highest and 11 is the lowest. if the IOPL is lower than the current privilege level then it suspends execution
+10. Nested task flag: is set if the current task is nested within another task execution. this would mean that a context switch has occurred and that the cpu must store the status of the previous task
+11. Resume flag: is used in debugging to control the resumption of execution after the next instruction. it works with the trap flag
+12. Virtual Mode flag: to switch to virtual mode to simulate multiprocessing 
+13. Alignment Check flag: checks if a word or doubleword is addressed on a non-word or a non-doubleword boundary. 
+
+should be the important registers. 
+
+
+## segment registers
+are additional registers that generate memory addresses when combined with other registers. it functions differently in real mode and protected mode. these are somewhat like address pointers that help the cpu access different regions/segments of the memory. 
+
+1. CS (code) holds the program code. 
+2. DS (data) holds global variables and static variables are stored here
+3. SS (stack) holds function calls and local variables. this also can be used to manage deallocation of variables after their scope is done. 
+4. ES (extra) additional data segment used by some string instructions to hold data
+
+# real mode memory addressing
+
+real mode is a legacy operating mode that some of the older x86 processors used. it was the default mode until newer modes were introduced. \
+in real mode the cpu can only access the first 1 MB of memory. and it also has no memory protection thats seen in modern day protected mode, like protection rings.
+
+### segments and offsets
+in real mode memory is addressed in a segmented memory model. memory is divided into different segments each of 64 KB. and segments are accessed using 16-bit memory addresses. the processor uses the segment registers (CS, DS, SS, ES) to point to different segments of memory. \
+then offset addresses selects any given address in that given segment. 
+
+segments in real mode always have a size of 64 KB. so for example
+if a segment starts at 0x00000, then it ends at 0x10000. then the next segment ends at iFFFFF
