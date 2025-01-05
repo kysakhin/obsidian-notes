@@ -77,8 +77,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "5cd7419ebe7e5854",
@@ -165,8 +164,9 @@
   },
   "active": "c24ec64e353519cd",
   "lastOpenFiles": [
-    "prerequisites.md",
+    "programs ig.md",
     "registers.md",
+    "prerequisites.md",
     "hexdecimal understanding.md",
     "Welcome.md"
   ]
