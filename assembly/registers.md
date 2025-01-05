@@ -67,4 +67,81 @@ in real mode memory is addressed in a segmented memory model. memory is divided 
 then offset addresses selects any given address in that given segment. 
 
 segments in real mode always have a size of 64 KB. so for example
-if a segment starts at 0x00000, then it ends at 0x10000. then the next segment ends at iFFFFF
+if a segment starts at 0x00000, then it ends at 0xFFFFF. then the next segment starts at 0x10000 and ends at 1FFFFF. 
+
+real address is calculated by \
+```
+$$
+physical address = (segment value * 16) + offset
+$$
+```
+
+segment value is shortened by 16\*\*1.
+
+# how it all adds up:
+
+## CS register
+- points to the segment containing the currently operating instruction
+- used with IP (instruction pointer)
+- when executing an instruction, the physical address is calculated by CS:IP (segment register):(offset)
+- cannot be directly modified. only by jump and call instructions
+
+## DS register
+- used for general data access
+- works with AX, BX, CX, DX, SI, DI registers 
+- can be modified using mov instruction
+
+## SS register
+- points to segment containing stack
+- offsets are the SP(stack pointer) or BP(base pointer) registers.
+- SS:SP points to the top of the stack
+- interrupts between SS and SP modifying can sometimes crash the system
+
+
+![](https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fece-research.unm.edu%2Fjimp%2F310%2Fslides%2Fmicro_arch1-4.gif&f=1&nofb=1&ipt=3f2500132f057d640de15cb3d242aafdd29bbcb83d1683a19800bc164d5027f8&ipo=images)
+
+
+the segment:offset scheme allows for relocation. it also allows programs written to function in real mode to operate in protected mode aswell. once it is relocated, it can still be executed without change or moving back to initial place. 
+
+
+# protected mode memory addressing 
+protected mode memory addressing allows access to data located above the first 1MB of memory aswell as the first 1MB. 
+
+offset address is still used here aswell but no segment address is no longer present. in place of the segment address, the segment register contains a selector that selects descriptor from the descriptor table. this is not to be confused with the process descriptor table that exists on oses. descriptor table here is purely hardware-level structure. the descriptor describes the memory segment's location, length and access rights. 
+
+unlike real mode, protected mode doesnt access physical memory directly. instead it uses a layer of abstraction through **descriptors.**
+
+some differences between real mode and protected mode
+
+| **Feature**           | **Real Mode**                              | **Protected Mode**                                  |
+| --------------------- | ------------------------------------------ | --------------------------------------------------- |
+| **Address Space**     | Limited to **1 MB** (20-bit addressing).   | Can access up to **4 GB** (32-bit addressing).      |
+| **Memory Addressing** | Uses a simple segment:offset scheme.       | Uses segment selectors with descriptors in a table. |
+| **Protection**        | No memory protection.                      | Provides memory protection and isolation.           |
+| **Multitasking**      | Not supported.                             | Fully supported.                                    |
+| **Paging**            | Not available.                             | Supports paging for virtual memory.                 |
+| **Interrupts**        | Uses the real mode interrupt vector table. | Uses an interrupt descriptor table (IDT).           |
+
+
+## selectors and descriptors
+there are two descriptor tables used with the segment registers. one contains global descriptors and the other contains local descriptors. a descriptor is a detailed label that tells the cpu what kind of segment it is. like: 
+1. base address
+2. segment limit
+3. access rights
+4. type of segment (code, data, system)
+5. various control flags
+
+each descriptor is 8 bytes (64 bits long). its classified somewhat like this
+```
+base (32 bits total, split into 3 parts)
+limit (20 bits total, split into 2 parts)
+access rights and flags (12 bits)
+```
+
+### global descriptor table
+main table that stores descriptors. its always available to all the processes in the system. it typically contains:
+- null descriptor
+- code segments for the operating system
+- data segments for the operating system
+- task state segments for task switching
+
