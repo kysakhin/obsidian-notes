@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "50bdc1434e2b72b4",
+        "id": "f3b966cda1dbcc22",
         "type": "tabs",
         "children": [
           {
-            "id": "c24ec64e353519cd",
+            "id": "9c52c0781deb7293",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "registers.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "registers"
+              "title": "New tab"
             }
           }
         ]
@@ -162,10 +158,10 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "c24ec64e353519cd",
+  "active": "9c52c0781deb7293",
   "lastOpenFiles": [
-    "programs ig.md",
     "registers.md",
+    "programs ig.md",
     "prerequisites.md",
     "hexdecimal understanding.md",
     "Welcome.md"
