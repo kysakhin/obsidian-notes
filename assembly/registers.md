@@ -1,4 +1,4 @@
-there are 2 types of registers classified based on if the application can modify them. 
+### there are 2 types of registers classified based on if the application can modify them. 
 
 ## program visible registers
 1. general purpose registers. RAX, RBX RCX etc
@@ -13,31 +13,49 @@ there are 2 types of registers classified based on if the application can modify
 2. internal registers
 
 ---
-# multipurpose registers
+
+## terms to understand
+registers come in varying sizes. ranging from 16 bits to 64 bits. \
+![](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fdz2cdn1.dzone.com%2Fstorage%2Ftemp%2F14016768-register.png&f=1&nofb=1&ipt=c6f2278aae1009ea0049d5cf7d317ad50ed9996eef71f270289607da89eb50d8&ipo=images)
+
+the 'R' signifies 64 bit. 'E' specifies 32 bit. \
+this convention works ONLY for registers from R0-R7. they have different names, as discussed later. \
+in some places i only mention the AX to specify a register.
+
+---
+# general purpose registers
+also called as multipurpose registers
 
 1. **RAX:** (accumulator) used for instructions such as multiplication, division.
 2. **RBX:** (base index) holds the offset address of a location
-3. **RCX:** (count) holds count
+3. **RCX:** (count) holds count typically during loops
 4. **RDX:** (data) can hold data or even memory address
-5. RBP: (base pointer) 
-6. RDI: (destination index) 
-7. RSI: (source index) 
-8. R8 through R15 (general purpose registers) can be used as as extended registers and for anything
+5. **RBP**: (base pointer) used to point to the stack frame in function calls
+6. **RDI**: (destination index) for string and memory operations
+7. **RSI**: (source index) for string and memory operations
+8. **RSP**: (stack pointer) points to the top of the stack.
+9. R8 through R15 (general purpose registers) can be used as as extended registers and for anything
+
+registers from R8 to R15 have a different hierarchy for their smaller 32-bit and 16-bit counterparts. \
+- **R8–R15**: full 64-bit registers.
+- **R8D–R15D**: lower 32 bits (D = double word).
+- **R8W–R15W**: lower 16 bits (W = word).
+- **R8B–R15B**: lower 8 bits (B = byte).
 
 ## special purpose registers
-1. RIP (instruction pointer) it holds the address of the next set of instruction. the register is IP (16 bits) when the processor is in real mode. and EIP (32 bits) when it is in protected mode. this can be modified by jump calls. 
+1. RIP (instruction pointer) it holds the address of the next set of instruction. the register is IP (16 bits) when the processor is in real mode. and EIP (32 bits) when it is in protected mode. this can be modified by jump calls and automatically while executing instructions one by one
 2. RSP (stack pointer) pointer to the top of the stack memory. 
 3. RFLAGS register holds the status of the processor. tracks the state, the arithmetic, logical operations. 
 
-### RFLAGS
+### RFLAGS (64-bit) / EFLAGS (32-bit)
 ![](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fgrandidierite.github.io%2Fassets%2Fimg%2Feflags.png&f=1&nofb=1&ipt=4661c5bd2036c042140ca82f66af4d16f183e620d4ac14040542ba30f0b1ef80&ipo=images)
 
 1. Carry flag: holds carry after addition or borrow during subtraction. can sometimes also indicate error conditions
 2. Parity flag: is set if the LS BYTE has an even number of zeroes.
-3. Auxiliary flag: indicates a carry/borrow between lower nibbles.
-4. Zero flag: is set if the result becomes 0
-5. Sign flag: is set if the result is negative
-6. Trap flag: when this flag is set, the cpu generates a special interrupt (debug exception) after every interrupt
+3. Auxiliary flag: indicates a carry/borrow between lower nibbles (4 bits) of a byte during arithmetic operations.
+4. Zero flag: is set if the operation is 0
+5. Sign flag: is set if the operation is negative (based on the MSB. the MSB holds the sign. 1 for negative and 0 for positive)
+6. Trap flag: when this flag is set, the cpu generates a special interrupt (debug exception) after every instruction
 7. Direction flag: this is only how strings are iterated. if DF is 0 then process strings from low memory to higher memory. if it is set then pointer needs to be decreemented from higher memory to lower.
 8. Overflow flag: occurs when signed numbers are added or subtracted and it has exceeded the capacity of the machine. for unsigned operations the overflow flag is ignored. for unsigned, the CF flag handles overflow conditions. 
 9. I/O privilege level: is used in protected mode operation to select the privilege level for I/O devices. it uses 2 bits. so an IOPL of 00 is the highest and 11 is the lowest. if the IOPL is lower than the current privilege level then it suspends execution
@@ -50,12 +68,13 @@ should be the important registers.
 
 
 ## segment registers
-are additional registers that generate memory addresses when combined with other registers. it functions differently in real mode and protected mode. these are somewhat like address pointers that help the cpu access different regions/segments of the memory. 
+segment registers are used to divide memory into segments and help the cpu generate addresses in conjunction with other registers, especially in real mode and protected mode. they help access different regions by combining with offsets.
 
 1. CS (code) holds the program code. 
 2. DS (data) holds global variables and static variables are stored here
-3. SS (stack) holds function calls and local variables. this also can be used to manage deallocation of variables after their scope is done. 
+3. SS (stack) holds function calls and local variables. this also can be used to manage deallocation of variables after their scope is done. and also the stack grows to lower memory addresses. unlike convention when the top of the stack is incremented after a push, here it is decremented. 
 4. ES (extra) additional data segment used by some string instructions to hold data
+5. FS and GS are extra segments thats used for special purposes like thread specific data in some operating systems.
 
 # real mode memory addressing
 
@@ -137,15 +156,6 @@ base (32 bits total, split into 3 parts)
 limit (20 bits total, split into 2 parts)
 access rights and flags (12 bits)
 ```
-
-### global descriptor table
-main table that stores descriptors. its always available to all the processes in the system. it typically contains:
-- null descriptor
-- code segments for the operating system
-- data segments for the operating system
-- task state segments for task switching
-
-
 # program invisible registers
 
 all descriptor tables are invisible registers
@@ -181,7 +191,8 @@ the leftmost bit (PG) position of CR0 selects paging when placed at a logic 1 le
 in x86 and x86-64 architectures, CR3 is a control register that holds the physical address of the page directory in systems with paging enabled.
 
 ### page directory
-a page directory is like an address book for other page tables. and page tables are used to convert virtual addresses to physical ones. so the CR3 base is gonna hold the physical address of the first page directory. some systems have multiple page directories. one page directory can cover 4 GB of memory. 
+a page directory is like an address book for other page tables. and page tables are used to convert virtual addresses to physical ones. so the CR3 base is gonna hold the physical address of the first page directory. some systems have multiple page directories. one page directory can cover 4 GB of memory. \
+essentially, each entry in the page directory holds a physical address to a page table. and that page table contains entries to map the virtual address to physical memory locations.
 
 ![](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.2Fq6I1YwT8EZmzY4Cep5XAAAAA%26pid%3DApi&f=1&ipt=e8a06b47bbfce2569399014183bd43ecbf57d71638be71291d4d2ca79bdbae9f&ipo=images)
 
