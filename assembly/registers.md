@@ -94,8 +94,13 @@ $$
 physical address = (segment value * 16) + offset
 $$
 ```
+for example, if there exists a segment register of value 0x1234, then the physical memory location would be 0x12340. \
+this is hexadecimal notation. \
+another example: for a segment register: 0xAB00, then its physical address is 0xAB000. \
+the bits are left shifted once. 
 
-segment value is shortened by 16\*\*1.
+now coming to offsets, its calculated by a simple hexadecimal addition. \
+![](https://blog-pictures.vercel.app/segment_offset.png)
 
 # how it all adds up:
 
