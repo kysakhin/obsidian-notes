@@ -94,15 +94,15 @@ based on that we can perform a jump operation to a label. label is just a marker
 cmov is used in compiler design to reduce the need for branching
 
 --- 
-signed and unsigned integers use different flags for comparisions. 
+signed and unsigned integers use different flags for comparisons. 
 
-## unsigned comparision
-since they dont have negative values, comparision is simply done by subtraction. and from the result, the **Carry Fag (CF)** is set. \
+## unsigned comparison
+since they dont have negative values, comparison is simply done by subtraction. and from the result, the **Carry Fag (CF)** is set. \
 if CF = 1, that means that a borrow occurred, meaning that the first number was lesser than the second. \
 if CF = 0, that means that there was no borrow involved, and hence the second number was the lesser one. \
 along with this, the Zero Flag (ZF) is also used to track equality
 
-## signed comparision
+## signed comparison
 since signed integers use their MSB for sign, we need to consider the **Sign Flag (SF)** and the **Overflow Flag (OF)** for results. \
 if SF = 1 means that the result of the subtraction was negative. \
 if OF = 1 means that a large negative number was subtracted from a positive number. \ 
@@ -114,3 +114,63 @@ example:
     - OF = 1 because the result exceeds the range of a signed 8-bit integer.
 
 ---
+# cmp
+to understand the next topic, jumps, we need to understand cmp. \
+cmp is for comparing two values \
+```
+cmp a, b
+```
+this subtracts b from a. (a-b) \
+based on the result of this subtraction, certain flags are set/cleared. \
+and jumps works on these flags. \
+the eflags/rflags from previous chapter are used to store flags. they essentially capture the state of the operation.
+
+---
+# jumps
+jumps are used to move the ip (instruction pointer) register to different regions
+## unconditional jumps
+```
+jmp label
+```
+just jumps to a given label
+
+## conditional jumps
+when we perform any instructions for example, **cmp,** (compare) it performs a comparison between the operands. and based on the result, the flags in the eflags/rflags register, are modified. and based on the state of these flags, we can perform conditional jumps.
+
+### *unsigned conditional jumps*
+a **cmp** instruction subtracts the second operand from the first. \
+cmp a, b is like a-b. and based on the result, bits in the eflags/rflags are updated.
+based on the flag needed for checking, 
+1. je/jz (jump if equal/jump if zero)
+> jumps if the zero flag is set.
+
+2. jne/jnz (jump if not equal/jump if not zero)
+> jumps if zero flag is cleared
+
+3. ja/jnbe (jump if above/jump if not below or equal) 
+> jumps if both the carry flag (cf) and zero flag (zf) are cleared, indicating `a > b` for unsigned values.
+
+4. jae/jnb (jump is above and equal/jump if not below)
+> jumps if the carry flag (cf) is cleared. indicating `a >= b` 
+
+### *signed conditional jumps*
+
+1. jg/jnle (jump if greater/jump if not less or equal) 
+> jumps if the zero flag (zf) is cleared and sign flag (sf) equals overflow flag (of) 
+
+2. jge/jnl (jump if greater or equal/jump if not less)
+> jumps if sign flag equals overflow flag
+
+3. jl/jnge(jump if less/jump if not greater or equal)
+> jumps if sign flag does not equal overflow flag
+
+4. jle/jng (jump if less or equal/jump if not greater)
+> jumps if the zero flag is set or the sign flag does not equal overflow flag
+
+### *specific condition jumps*
+1. jump based on carry (jc/jnc)
+2. jump based on overflow (jo/jno)
+3. jump based on sign (js/jns)
+4. jump based on parity (jp/jpe (even parity) and jnp/jpo (odd parity) )
+( parity flag indicates whether the number of 1 bits in the least significant BYTE is even or odd. )
+
