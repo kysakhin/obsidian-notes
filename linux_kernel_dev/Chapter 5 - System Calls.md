@@ -133,7 +133,7 @@ SYSCALL_DEFINE0(hello_world) {
 `SYSCALL_DEFINEN` is a family of macros that make it easy to define a system call with N arguments.
 
 
-1. add your syscall number to your table. on my system, it was like this. NOTE THAT SYSCALL NUMBER WILL DIFFER. 
+3. add your syscall number to your table. on my system, it was like this. NOTE THAT SYSCALL NUMBER WILL DIFFER. 
 	* **File: arch/x86/entry/syscalls/syscall_64.tbl**
 ```
 548 common hello_world sys_hello_world
@@ -142,19 +142,19 @@ SYSCALL_DEFINE0(hello_world) {
 # hello_world is the name that you've defined in the previous step
 ```
 
-2. add system call prototype
+4. add system call prototype
 in the file `include/linux/syscalls.h` be sure to add this line before the `#endif`
 ```
 asmlinkage long sys_hello_world(void);
 ```
 
-3. after that in your `kernel/Makefile` add this line
+5. after that in your `kernel/Makefile` add this line
 ```
 obj-y += hello_syscall.o
 ```
 this should be the same as the .c filename that you have created in the first step.
 
-4. copy the default config file from your existing system. this gives a pretty good configuration files 
+6. copy the default config file from your existing system. this gives a pretty good configuration files 
 
 ```
 cp /boot/config-$(uname -r) .config
@@ -193,7 +193,7 @@ make -j$(nproc)
 make modules_install
 ```
 
-1. copying the bzImage and building the initramfs. 
+2. copying the bzImage and building the initramfs. 
 	to make things easier, here's a small script: 
 
 ```bash
@@ -260,7 +260,7 @@ i will be using the nasm and assembling with respect to x86_64. \
 1. create a new .asm file and add the following code \
 ![](https://blog-pictures.vercel.app/syscall6.png)
 
-1. assemble it, link it and then run it. \
+2. assemble it, link it and then run it. \
 ![](https://blog-pictures.vercel.app/syscall7.png)
 
 
