@@ -17,7 +17,7 @@ relating back to the previous chapter, linux provides a family of system calls f
 
 # introduction
 system calls are a set of interfaces by which processes running in user-space can interact with the system. \
-![](https://i.sstatic.net/DzNLZ.png) 
+![kernel protection ring](https://i.sstatic.net/DzNLZ.png) 
 
 system calls provide a layer between hardware and user-space processes. this layer has 3 main purposes:
 - acting as an abstracted hardware interface for user applications. when reading or writing a file, the application does not need to worry about the type of disk, media or filesystem type.
@@ -47,6 +47,7 @@ this is like a phonebook of all the interrupts with their associated number, whi
 5. then the cpu runs that interrupt handler
 
 ## going back
+since applications cannot directly execute kernel code because kernel resides in protected memory, applications signal the kernel using an interrupt. \
 really really long ago, processors used the interrupt number 0x80 for system calls. this triggers a switch to kernel mode and handler is called system_call(). it is architecture dependent. \
 but a more better way x86 processors handle is sysenter. 
 
@@ -72,6 +73,195 @@ so before entering the kernel-space the syscall number is fed into the rax regis
 
 ## parameter passing
 just like how it works in assembly, the user-space must relay these parameters down to the kernel. for example, \
-![](https://blog-pictures.vercel.app/syscalltable.png)
+![some syscalls with their parameters](https://blog-pictures.vercel.app/syscalltable.png)
 
 
+# writing your own system calls??? 
+please test this in a safe environment. a virtual machine will be more preferred. \
+**this can be dangerous** \
+
+## some important considerations
+1. choose a unique syscall number that doesnt conflict with the existing ones
+2. ensure proper error handling
+3. follow kernel coding standards
+4. be careful with kernel memory access
+5. test in a safe environment
+
+# steps
+for this im using arch linux cli version. \
+since arch installation on is pretty confusing for a few, here's a premade virtual disk image [Arch Linux Disk Image](https://www.osboxes.org/arch-linux/#archlinux-20240601-vbox)
+the actual directory structure and file locations will be different for different OSes \
+
+### **dependencies**
+make sure you have all the dependencies
+```bash
+# update mirrors (not necessary. just makes installation faster)
+sudo pacman -S reflector
+sudo reflector --verbose --latest 10 --country 'India' --sort rate --save /etc/pacman.d/mirrorlist
+
+# update system
+sudo pacman -Syu
+
+# install dependencies
+sudo pacman -S base-devel bc cpio xmlto docbook-xsl kmod inetutils git python libelf pahole
+
+```
+## writing the syscall
+then **clone the repository** wherever you want to
+```shell
+git clone --depth=1 https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+cd linux
+```
+
+
+1. cd into `kernel/` and create your new syscall.
+```
+cd kernel/
+
+vim hello_syscall.c
+```
+
+2. write some syscall logic. here's a very simple one. remember that kernel doesnt use standard C library. 
+```C
+#include <linux/syscalls.h> 
+
+SYSCALL_DEFINE0(hello_world) { 
+	printk(KERN_INFO "Hello from kernel space!\n"); 
+	return 0; 
+}
+```
+`SYSCALL_DEFINEN` is a family of macros that make it easy to define a system call with N arguments.
+
+
+1. add your syscall number to your table. on my system, it was like this. NOTE THAT SYSCALL NUMBER WILL DIFFER. 
+	* **File: arch/x86/entry/syscalls/syscall_64.tbl**
+```
+548 common hello_world sys_hello_world
+
+# 548 is the system call number (MAY DIFFER FOR YOU. use the next number)
+# hello_world is the name that you've defined in the previous step
+```
+
+2. add system call prototype
+in the file `include/linux/syscalls.h` be sure to add this line before the `#endif`
+```
+asmlinkage long sys_hello_world(void);
+```
+
+3. after that in your `kernel/Makefile` add this line
+```
+obj-y += hello_syscall.o
+```
+this should be the same as the .c filename that you have created in the first step.
+
+4. copy the default config file from your existing system. this gives a pretty good configuration files 
+
+```
+cp /boot/config-$(uname -r) .config
+
+# or
+
+zcat /proc/config.gz > .config
+```
+
+from here, you can either leave it as it is, or \
+you can do 
+```
+make olddefconfig
+```
+this will update the current config files to the new options. 
+
+
+## building the kernel
+this will take a lot of time. so if you have a bad processor or have configured your vm to use less ram or processor, be prepared for your vm to crash or have problems. \
+i would suggest you to use **qemu** since it supports kernel virtualization and is offers some really great performance benefits. \
+if you do end up using qemu, then the command to run it is: 
+
+```bash
+qemu-system-x86_64 \
+    -hda path/to/.vdi \   # Path to virtual disk image (VDI format)
+    -m 4G \              # Allocate 4 gigabytes of RAM to the VM
+    -smp 4 \             # Use 4 CPU cores (symmetric multiprocessing)
+    -enable-kvm \        # Enable KVM hardware virtualization for better performance
+    -vga std            # Use standard VGA card emulation
+```
+
+1. make 
+	this is gonna take a really long time. sometimes even 1hr+ if there are no errors.
+```bash
+make -j$(nproc)
+make modules_install
+```
+
+1. copying the bzImage and building the initramfs. 
+	to make things easier, here's a small script: 
+
+```bash
+#!/usr/bin/bash
+
+# change this if you want 
+SUFFIX="-axolo"
+
+# This causes the script to exit if an error occurs
+set -e
+
+# Install kernel image
+cp arch/x86_64/boot/bzImage /boot/vmlinuz-linux$SUFFIX
+
+# Create preset and build initramfs
+sed s/linux/linux$SUFFIX/g \
+    </etc/mkinitcpio.d/linux.preset \
+    >/etc/mkinitcpio.d/linux$SUFFIX.preset
+
+# this command is arch specific. for other distros please refer to "how to create a initial ramdisk environment on (your distro)"
+# examples for other distros:
+# Ubuntu/Debian: update-initramfs -c -k <kernel_version>
+# Fedora/RHEL: dracut --force --kver <kernel_version>
+mkinitcpio -p linux$SUFFIX
+
+# Update bootloader entries with new kernels.
+grub-mkconfig -o /boot/grub/grub.cfg
+
+```
+
+
+# testing if everything is working...
+1. boot into your new kernel. \
+in the grub menu, go to \
+**Advanced options for Arch Linux**
+![](https://blog-pictures.vercel.app/syscall1.png)
+
+2. select your new kernel \
+![](https://blog-pictures.vercel.app/syscall2.png)
+
+3. if everything went correctly then you can login using credentials
+4. there are 2 ways to test if its working. using C and another is using Assembly. choose whichever you are comfortable with.
+
+
+## using C
+1. create a new .c file and type these out. \
+here, the 548 was the system call number i had put in before. during configuration.
+
+![](https://blog-pictures.vercel.app/syscall3.png)
+
+2. compile and run it \
+if it returns a status of 0, then congrats :D everything went correctly.
+![](https://blog-pictures.vercel.app/syscall4.png)
+
+3. check dmessages \
+![](https://blog-pictures.vercel.app/syscall5.png)
+
+
+you can see that it says "Hello from kernel space!"
+
+
+## in assembly
+i will be using the nasm and assembling with respect to x86_64. \
+1. create a new .asm file and add the following code \
+![](https://blog-pictures.vercel.app/syscall6.png)
+
+1. assemble it, link it and then run it. \
+![](https://blog-pictures.vercel.app/syscall7.png)
+
+
+it says "Hello from kernel space!" twice here. 

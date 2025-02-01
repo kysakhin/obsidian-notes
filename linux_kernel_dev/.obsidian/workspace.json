@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "a06c3d486785c9de",
+        "id": "4588d18405096b69",
         "type": "tabs",
         "children": [
           {
-            "id": "732dcf578b6cdce0",
+            "id": "9d82059422c2097c",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -40,7 +40,8 @@
             "state": {
               "type": "file-explorer",
               "state": {
-                "sortOrder": "alphabetical"
+                "sortOrder": "alphabetical",
+                "autoReveal": false
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -162,12 +163,12 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "732dcf578b6cdce0",
+  "active": "9d82059422c2097c",
   "lastOpenFiles": [
-    "Chapter 4 - Process Scheduling.md",
     "Chapter 5 - System Calls.md",
-    "Chapter 3 - Process Management.md",
     "Chapter 4 (Updated) CFS.md",
+    "Chapter 4 - Process Scheduling.md",
+    "Chapter 3 - Process Management.md",
     "Chapter 2.md"
   ]
 }
