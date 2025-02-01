@@ -114,11 +114,10 @@ cd linux
 ```
 
 
-1. cd into `kernel/` and create your new syscall.
-```
-cd kernel/
+1. write your new syscall in the `kernel/` directory.
+```bash
+vim kernel/hello_syscall.c
 
-vim hello_syscall.c
 ```
 
 2. write some syscall logic. here's a very simple one. remember that kernel doesnt use standard C library. 
@@ -154,7 +153,7 @@ obj-y += hello_syscall.o
 ```
 this should be the same as the .c filename that you have created in the first step.
 
-6. copy the default config file from your existing system. this gives a pretty good configuration files 
+6. copy the default config file from your existing system. this gives a pretty good configuration 
 
 ```
 cp /boot/config-$(uname -r) .config
@@ -256,7 +255,7 @@ you can see that it says "Hello from kernel space!"
 
 
 ## in assembly
-i will be using the nasm and assembling with respect to x86_64. \
+i will be using nasm and assembling with respect to x86_64. \
 1. create a new .asm file and add the following code \
 ![](https://blog-pictures.vercel.app/syscall6.png)
 
@@ -265,3 +264,5 @@ i will be using the nasm and assembling with respect to x86_64. \
 
 
 it says "Hello from kernel space!" twice here. 
+
+that concludes it. 
