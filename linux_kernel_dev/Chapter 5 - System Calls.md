@@ -17,7 +17,7 @@ relating back to the previous chapter, linux provides a family of system calls f
 
 # introduction
 system calls are a set of interfaces by which processes running in user-space can interact with the system. \
-![kernel protection ring](https://i.sstatic.net/DzNLZ.png) 
+![kernel protection ring](https://blog-pictures.vercel.app/kernelring.png) 
 
 system calls provide a layer between hardware and user-space processes. this layer has 3 main purposes:
 - acting as an abstracted hardware interface for user applications. when reading or writing a file, the application does not need to worry about the type of disk, media or filesystem type.
